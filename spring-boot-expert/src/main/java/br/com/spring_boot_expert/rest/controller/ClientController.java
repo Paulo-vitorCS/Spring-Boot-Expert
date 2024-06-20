@@ -2,11 +2,9 @@ package br.com.spring_boot_expert.rest.controller;
 
 import br.com.spring_boot_expert.domain.Client;
 import br.com.spring_boot_expert.repositories.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +22,11 @@ import java.util.List;
 @RequestMapping("/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+
+    public ClientController(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     @GetMapping(value = "/{id}")
     public Client findClientById(@PathVariable("id") Integer id) {
@@ -57,7 +58,7 @@ public class ClientController {
             client.setName(newClient.getName());
             client.setCpf(newClient.getCpf());
             clientRepository.save(client);
-            return ResponseEntity.noContent().build();
+            return client;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
     }
 
