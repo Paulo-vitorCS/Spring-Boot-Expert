@@ -1,6 +1,7 @@
 package br.com.spring_boot_expert.rest.controller;
 
 import br.com.spring_boot_expert.exceptions.BusinessRulesException;
+import br.com.spring_boot_expert.exceptions.OrderNotFoundException;
 import br.com.spring_boot_expert.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,12 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleBusinessRulesException(BusinessRulesException ex) {
         String errorMessage = ex.getMessage();
         return new ApiErrors(errorMessage);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleOrderNotFoundException(OrderNotFoundException ex) {
+        return new ApiErrors(ex.getMessage());
     }
 
 }

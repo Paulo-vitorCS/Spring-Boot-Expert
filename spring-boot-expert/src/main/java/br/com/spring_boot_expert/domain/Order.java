@@ -1,7 +1,10 @@
 package br.com.spring_boot_expert.domain;
 
+import br.com.spring_boot_expert.domain.enums.OrderStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ORDER_TB")
+@Table(name = "Order_tb")
 public class Order {
 
     @Id
@@ -38,6 +41,10 @@ public class Order {
 
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items;

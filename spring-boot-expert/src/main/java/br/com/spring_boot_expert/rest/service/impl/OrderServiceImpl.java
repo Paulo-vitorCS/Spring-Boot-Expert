@@ -4,7 +4,9 @@ import br.com.spring_boot_expert.domain.Client;
 import br.com.spring_boot_expert.domain.Order;
 import br.com.spring_boot_expert.domain.OrderItem;
 import br.com.spring_boot_expert.domain.Product;
+import br.com.spring_boot_expert.domain.enums.OrderStatus;
 import br.com.spring_boot_expert.exceptions.BusinessRulesException;
+import br.com.spring_boot_expert.exceptions.OrderNotFoundException;
 import br.com.spring_boot_expert.repositories.ClientRepository;
 import br.com.spring_boot_expert.repositories.OrderItemRepository;
 import br.com.spring_boot_expert.repositories.OrderRepository;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
         order.setTotal(orderDTO.getTotal());
         order.setOrderDate(LocalDate.now());
         order.setClient(client);
+        order.setStatus(OrderStatus.COMPLETED);
 
         List<OrderItem> orderItems = convertItems(order, orderDTO.getItems());
         orderRepository.save(order);
@@ -66,5 +70,21 @@ public class OrderServiceImpl implements OrderService {
                     orderItem.setProduct(product);
                     return orderItem;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Order> getCompleteOrder(Integer id) {
+        return orderRepository.findByIdFetchItems(id);
+    }
+
+    @Transactional
+    @Override
+    public void updateStatus(Integer id, OrderStatus orderStatus) {
+        orderRepository
+                .findById(id)
+                .map(order -> {
+                    order.setStatus(orderStatus);
+                    return orderRepository.save(order);
+                }).orElseThrow(() -> new OrderNotFoundException());
     }
 }
