@@ -2,6 +2,7 @@ package br.com.spring_boot_expert.rest.controller;
 
 import br.com.spring_boot_expert.domain.Product;
 import br.com.spring_boot_expert.repositories.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product save(@RequestBody Product product) {
+    public Product save(@RequestBody @Valid Product product) {
         return productRepository.save(product);
     }
 
@@ -53,7 +54,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Product newProduct) {
+    public void update(@PathVariable Integer id, @RequestBody @Valid Product newProduct) {
         productRepository.findById(id).map(product -> {
             product.setDescription(newProduct.getDescription());
             product.setUnitPrice(newProduct.getUnitPrice());

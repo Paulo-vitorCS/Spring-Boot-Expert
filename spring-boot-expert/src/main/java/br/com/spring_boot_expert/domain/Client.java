@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Set;
 
@@ -28,9 +30,12 @@ public class Client {
     private Integer id;
 
     @Column(name = "name", length = 100)
+    @NotEmpty(message = "The name field is required")
     private String name;
 
     @Column(name = "cpf", length = 11)
+    @NotEmpty(message = "The CPF field is required")
+    @CPF(message = "Please provide a valid CPF")
     private String cpf;
 
     @JsonIgnore

@@ -2,6 +2,7 @@ package br.com.spring_boot_expert.rest.controller;
 
 import br.com.spring_boot_expert.domain.Client;
 import br.com.spring_boot_expert.repositories.ClientRepository;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client save(@RequestBody Client client) {
+    public Client save(@RequestBody @Valid Client client) {
         return clientRepository.save(client);
     }
 
@@ -53,7 +54,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Client newClient) {
+    public void update(@PathVariable Integer id, @RequestBody @Valid Client newClient) {
         clientRepository.findById(id).map(client -> {
             client.setName(newClient.getName());
             client.setCpf(newClient.getCpf());

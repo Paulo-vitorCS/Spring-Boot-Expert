@@ -1,5 +1,6 @@
 package br.com.spring_boot_expert.rest.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
 
+    @NotNull(message = "Please provide the client id")
     private Integer client;
+
+    @NotNull(message = "The total field is required")
     private BigDecimal total;
     private List<OrderItemDTO> items;
 

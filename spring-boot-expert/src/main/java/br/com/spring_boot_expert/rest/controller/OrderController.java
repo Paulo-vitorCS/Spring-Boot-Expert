@@ -8,6 +8,7 @@ import br.com.spring_boot_expert.rest.dto.OrderInformationDTO;
 import br.com.spring_boot_expert.rest.dto.OrderItemInformationDTO;
 import br.com.spring_boot_expert.rest.dto.UpdateOrderStatusDTO;
 import br.com.spring_boot_expert.rest.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save(@RequestBody OrderDTO orderDTO) {
+    public Integer save(@RequestBody @Valid OrderDTO orderDTO) {
         Order order = orderService.save(orderDTO);
         return order.getId();
     }

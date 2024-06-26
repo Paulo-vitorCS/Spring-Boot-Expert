@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,11 @@ public class Product {
     private Integer id;
 
     @Column(name = "description")
+    @NotEmpty(message = "The description field is required")
     private String description;
 
     @Column(name = "unit_price")
+    @NotNull(message = "The unitPrice field is required")
     private BigDecimal unitPrice;
 
 }
