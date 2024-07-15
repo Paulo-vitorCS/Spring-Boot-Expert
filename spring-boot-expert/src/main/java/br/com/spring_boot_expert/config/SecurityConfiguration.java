@@ -1,17 +1,18 @@
 package br.com.spring_boot_expert.config;
 
+import br.com.spring_boot_expert.rest.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -19,24 +20,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
+    @Autowired
+    private UserServiceImpl userService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user")
-                .password(passwordEncoder().encode("admin"))
-                .roles("USER")
-                .build()
-        );
-        manager.createUser(User.withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("USER", "ADMIN")
-                .build());
-        return manager;
     }
 
     @Bean
@@ -53,6 +42,10 @@ public class SecurityConfiguration {
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
 }
