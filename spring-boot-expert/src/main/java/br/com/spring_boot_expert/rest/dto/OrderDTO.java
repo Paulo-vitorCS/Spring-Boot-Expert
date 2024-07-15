@@ -1,5 +1,6 @@
 package br.com.spring_boot_expert.rest.dto;
 
+import br.com.spring_boot_expert.validation.NotEmptyList;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class OrderDTO {
 
     @NotNull(message = "The total field is required")
     private BigDecimal total;
+
+    @NotEmptyList(message = "The order cannot be placed without items")
     private List<OrderItemDTO> items;
 
 }
