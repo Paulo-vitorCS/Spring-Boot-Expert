@@ -1,5 +1,6 @@
-package br.com.spring_boot_expert;
+package br.com.spring_boot_expert.security.jwt;
 
+import br.com.spring_boot_expert.Application;
 import br.com.spring_boot_expert.domain.UserCredentials;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,9 +22,6 @@ public class JwtService {
 
     @Value("${security.jwt.expiration}")
     private String expiration;
-
-    @Value("${security.jwt.subscription.key}")
-    private String subscriptionKey;
 
     private final SignatureAlgorithm alg = Jwts.SIG.RS512;
     private final KeyPair pair = alg.keyPair().build();

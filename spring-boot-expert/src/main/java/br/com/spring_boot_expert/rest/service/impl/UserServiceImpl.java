@@ -1,12 +1,14 @@
 package br.com.spring_boot_expert.rest.service.impl;
 
 import br.com.spring_boot_expert.domain.UserCredentials;
+import br.com.spring_boot_expert.exceptions.InvalidPasswordException;
 import br.com.spring_boot_expert.repositories.UserCredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,17 @@ public class UserServiceImpl implements UserDetailsService {
     @Transactional
     public UserCredentials save(UserCredentials user) {
         return userRepository.save(user);
+    }
+
+    public UserDetails authenticate (UserCredentials user) {
+        UserDetails userDetails = loadUserByUsername(user.getLogin());
+        boolean passwordMatch = new BCryptPasswordEncoder().matches(user.getPassword(), userDetails.getPassword());
+
+        if (passwordMatch) {
+            return userDetails;
+        }
+
+        throw new InvalidPasswordException();
     }
 
     @Override
