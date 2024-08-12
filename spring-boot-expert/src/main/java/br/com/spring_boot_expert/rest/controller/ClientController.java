@@ -2,6 +2,8 @@ package br.com.spring_boot_expert.rest.controller;
 
 import br.com.spring_boot_expert.domain.Client;
 import br.com.spring_boot_expert.repositories.ClientRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
+@Tag(name = "Client Controller", description = "Clients API")
 public class ClientController {
 
     private final ClientRepository clientRepository;
@@ -30,6 +33,7 @@ public class ClientController {
     }
 
     @GetMapping(value = "/{id}")
+    @Operation(summary = "Find client", description = "Find a client by id.")
     public Client findClientById(@PathVariable("id") Integer id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
@@ -37,12 +41,14 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Save client", description = "Save a new client.")
     public Client save(@RequestBody @Valid Client client) {
         return clientRepository.save(client);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete client", description = "Delete a client by id.")
     public void deleteById(@PathVariable Integer id) {
         clientRepository.findById(id)
                 .map(client -> {
@@ -54,6 +60,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update client", description = "Update a client information by id.")
     public void update(@PathVariable Integer id, @RequestBody @Valid Client newClient) {
         clientRepository.findById(id).map(client -> {
             client.setName(newClient.getName());
@@ -64,6 +71,7 @@ public class ClientController {
     }
 
     @GetMapping
+    @Operation(summary = "Find all clients", description = "Find all clients")
     public List<Client> find(Client client) {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
