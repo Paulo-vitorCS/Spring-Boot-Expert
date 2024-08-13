@@ -2,15 +2,24 @@ package br.com.location.service;
 
 import br.com.location.domain.City;
 import br.com.location.repositories.CityRepository;
+import br.com.location.repositories.specs.CitySpecs;
+import ch.qos.logback.core.util.StringUtil;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+
+import static br.com.location.repositories.specs.CitySpecs.idEqual;
+import static br.com.location.repositories.specs.CitySpecs.inhabitantsGreaterThan;
+import static br.com.location.repositories.specs.CitySpecs.nameEqual;
+import static br.com.location.repositories.specs.CitySpecs.nameLike;
 
 @Service
 public class CityService {
@@ -67,6 +76,29 @@ public class CityService {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase();
         Example<City> example = Example.of(city, matcher);
         return cityRepository.findAll(example);
+    }
+
+    public void listCitiesByNameSpecs() {
+        cityRepository.findAll(nameEqual("São Paulo").and(inhabitantsGreaterThan(1000000L)))
+                .forEach(System.out::println);
+    }
+
+    public void listCitiesSpecsDinamicFilter(City city) {
+        Specification<City> specs = Specification.where((root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+
+        if (city.getId() != null) {
+            specs = specs.and(idEqual(city.getId()));
+        }
+
+        if (StringUtils.hasText(city.getName())) {
+            specs = specs.and(nameLike(city.getName()));
+        }
+
+        if (city.getInhabitants() != null) {
+            specs = specs.and(inhabitantsGreaterThan(city.getInhabitants()));
+        }
+
+        cityRepository.findAll(specs).forEach(System.out::println);
     }
 
 }

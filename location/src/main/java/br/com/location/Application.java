@@ -27,8 +27,11 @@ public class Application implements CommandLineRunner {
 //		cityService.listCitiesByInhabitantsLessThan();
 //		cityService.listCitiesByInhabitantsGreaterThan();
 //		cityService.listCitiesByInhabitantsLessThanAndNameLike();
+//		var city = new City(null, "porto Alegre", null);
+//		cityService.dinamicFilter(city).forEach(System.out::println);
+//		cityService.listCitiesByNameSpecs();
 		var city = new City(null, "porto Alegre", null);
-		cityService.dinamicFilter(city).forEach(System.out::println);
+		cityService.listCitiesSpecsDinamicFilter(city);
 	}
 
 
