@@ -22,6 +22,7 @@ public class Application implements CommandLineRunner {
 //		listCitiesByNameStartingWith();
 //		listCitiesByNameEndingWith();
 //		listCitiesByNameContaining();
+		listCitiesByNameLike();
 	}
 
 	void listCities() {
@@ -46,6 +47,11 @@ public class Application implements CommandLineRunner {
 
 	void listCitiesByInhabitants() {
 		cityRepository.findByInhabitants(80000L).forEach(System.out::println);
+	}
+
+	void listCitiesByNameLike() {
+		cityRepository.findByNameLike("%za").forEach(System.out::println);
+		cityRepository.findByNameLike("porto%").forEach(System.out::println);
 	}
 
 	public static void main(String[] args) {
