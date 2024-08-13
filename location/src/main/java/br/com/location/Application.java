@@ -22,8 +22,12 @@ public class Application implements CommandLineRunner {
 //		listCitiesByNameStartingWith();
 //		listCitiesByNameEndingWith();
 //		listCitiesByNameContaining();
-		listCitiesByNameLike();
+//		listCitiesByNameLike();
+//		listCitiesByInhabitantsLessThan();
+//		listCitiesByInhabitantsGreaterThan();
+//		listCitiesByInhabitantsLessThanAndNameLike();
 	}
+
 
 	void listCities() {
 		cityRepository.findAll().forEach(System.out::println);
@@ -47,6 +51,18 @@ public class Application implements CommandLineRunner {
 
 	void listCitiesByInhabitants() {
 		cityRepository.findByInhabitants(80000L).forEach(System.out::println);
+	}
+
+	void listCitiesByInhabitantsLessThan() {
+		cityRepository.findByInhabitantsLessThan(100000L).forEach(System.out::println);
+	}
+
+	void listCitiesByInhabitantsGreaterThan() {
+		cityRepository.findByInhabitantsGreaterThan(1000000L).forEach(System.out::println);
+	}
+
+	void listCitiesByInhabitantsLessThanAndNameLike() {
+		cityRepository.findByInhabitantsLessThanAndNameLike(100000L, "O%").forEach(System.out::println);
 	}
 
 	void listCitiesByNameLike() {

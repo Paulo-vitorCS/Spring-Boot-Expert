@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CityRepository extends JpaRepository<City, Long> {
 
+    // ----- STRING VALUES -----
     List<City> findByName(String name);
     List<City> findByNameStartingWith(String startingString);
     List<City> findByNameEndingWith(String endingString);
@@ -15,7 +16,13 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     @Query("select c from City c where lower(c.name) like lower(?1)")
     List<City> findByNameLike(String name);
-    List<City> findByInhabitants(Long inhabitants);
 
+    // ----- NUMERICAL VALUES -----
+    List<City> findByInhabitants(Long inhabitants);
+    List<City> findByInhabitantsLessThan(Long inhabitants);
+    List<City> findByInhabitantsLessThanEqual(Long inhabitants);  // <=
+    List<City> findByInhabitantsGreaterThan(Long inhabitants);
+    List<City> findByInhabitantsGreaterThanEqual(Long inhabitants);  // >=
+    List<City> findByInhabitantsLessThanAndNameLike(Long inhabitants, String nome);
 
 }
