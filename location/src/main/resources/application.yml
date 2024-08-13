@@ -1,0 +1,12 @@
+#spring.application.name=location
+#
+##Não executa scripts automáticos de criação de banco
+#spring.jpa.hibernate.ddl-auto=none
+#
+#spring.jpa.show_sql=true
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
