@@ -1,11 +1,16 @@
 package br.com.location.service;
 
+import br.com.location.domain.City;
 import br.com.location.repositories.CityRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CityService {
@@ -56,6 +61,12 @@ public class CityService {
     public void listCitiesByNameLike() {
         cityRepository.findByNameLike("%za").forEach(System.out::println);
         cityRepository.findByNameLike("porto%").forEach(System.out::println);
+    }
+
+    public List<City> dinamicFilter(City city) {
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase();
+        Example<City> example = Example.of(city, matcher);
+        return cityRepository.findAll(example);
     }
 
 }
