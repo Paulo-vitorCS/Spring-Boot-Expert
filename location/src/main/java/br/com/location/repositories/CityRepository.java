@@ -1,6 +1,8 @@
 package br.com.location.repositories;
 
 import br.com.location.domain.City;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,9 +21,9 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     // ----- NUMERICAL VALUES -----
     List<City> findByInhabitants(Long inhabitants);
-    List<City> findByInhabitantsLessThan(Long inhabitants);
+    List<City> findByInhabitantsLessThan(Long inhabitants, Sort sort);
     List<City> findByInhabitantsLessThanEqual(Long inhabitants);  // <=
-    List<City> findByInhabitantsGreaterThan(Long inhabitants);
+    List<City> findByInhabitantsGreaterThan(Long inhabitants, Pageable pageable); // Pageable -> limit
     List<City> findByInhabitantsGreaterThanEqual(Long inhabitants);  // >=
     List<City> findByInhabitantsLessThanAndNameLike(Long inhabitants, String nome);
 

@@ -2,6 +2,7 @@ package br.com.location;
 
 import br.com.location.domain.City;
 import br.com.location.repositories.CityRepository;
+import br.com.location.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,63 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class Application implements CommandLineRunner {
 
 	@Autowired
-	private CityRepository cityRepository;
+	private CityService cityService;
 
 	@Override
 	public void run(String... args) throws Exception {
-//		listCitiesByName();
-//		listCitiesByInhabitants();
-//		listCitiesByInhabitants();
-//		listCitiesByNameStartingWith();
-//		listCitiesByNameEndingWith();
-//		listCitiesByNameContaining();
-//		listCitiesByNameLike();
-//		listCitiesByInhabitantsLessThan();
-//		listCitiesByInhabitantsGreaterThan();
-//		listCitiesByInhabitantsLessThanAndNameLike();
+//		cityService.listCitiesByName();
+//		cityService.listCitiesByInhabitants();
+//		cityService.listCitiesByInhabitants();
+//		cityService.listCitiesByNameStartingWith();
+//		cityService.listCitiesByNameEndingWith();
+//		cityService.listCitiesByNameContaining();
+//		cityService.listCitiesByNameLike();
+//		cityService.listCitiesByInhabitantsLessThan();
+		cityService.listCitiesByInhabitantsGreaterThan();
+//		cityService.listCitiesByInhabitantsLessThanAndNameLike();
 	}
 
-
-	void listCities() {
-		cityRepository.findAll().forEach(System.out::println);
-	}
-
-	void listCitiesByName() {
-		cityRepository.findByName("Ouvidor").forEach(System.out::println);
-	}
-
-	void listCitiesByNameStartingWith() {
-		cityRepository.findByNameStartingWith("Porto").forEach(System.out::println);
-	}
-
-	void listCitiesByNameEndingWith() {
-		cityRepository.findByNameEndingWith("a").forEach(System.out::println);
-	}
-
-	void listCitiesByNameContaining() {
-		cityRepository.findByNameContaining("a").forEach(System.out::println);
-	}
-
-	void listCitiesByInhabitants() {
-		cityRepository.findByInhabitants(80000L).forEach(System.out::println);
-	}
-
-	void listCitiesByInhabitantsLessThan() {
-		cityRepository.findByInhabitantsLessThan(100000L).forEach(System.out::println);
-	}
-
-	void listCitiesByInhabitantsGreaterThan() {
-		cityRepository.findByInhabitantsGreaterThan(1000000L).forEach(System.out::println);
-	}
-
-	void listCitiesByInhabitantsLessThanAndNameLike() {
-		cityRepository.findByInhabitantsLessThanAndNameLike(100000L, "O%").forEach(System.out::println);
-	}
-
-	void listCitiesByNameLike() {
-		cityRepository.findByNameLike("%za").forEach(System.out::println);
-		cityRepository.findByNameLike("porto%").forEach(System.out::println);
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
