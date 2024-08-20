@@ -18,4 +18,9 @@ public class FooController {
         return ResponseEntity.ok("Private route ok! User: " + authentication.getName());
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<String> adminRoute(Authentication authentication) {
+        return ResponseEntity.ok("Admin route ok!");
+    }
+
 }
