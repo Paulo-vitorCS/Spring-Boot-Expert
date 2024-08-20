@@ -3,10 +3,10 @@ package br.com.spring_security.api.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     @Bean
@@ -29,7 +30,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(customizer -> {
                         customizer
                                 .requestMatchers("/public").permitAll()
-                                .requestMatchers("/admin").hasRole("ADMIN")
                                 .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())

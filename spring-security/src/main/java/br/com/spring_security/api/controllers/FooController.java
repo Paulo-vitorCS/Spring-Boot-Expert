@@ -1,6 +1,7 @@
 package br.com.spring_security.api.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class FooController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> adminRoute(Authentication authentication) {
         return ResponseEntity.ok("Admin route ok!");
     }
