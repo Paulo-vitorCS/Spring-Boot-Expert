@@ -7,6 +7,7 @@ import br.com.spring_security.domain.repositories.GroupRepository;
 import br.com.spring_security.domain.repositories.UserGroupRepository;
 import br.com.spring_security.domain.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User save(User user, List<String> groups) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
+
         List<UserGroup> groupsList = groups.stream().map(groupName -> {
             Optional<Group> existingGroup = groupRepository.findByName(groupName);
             if (existingGroup.isPresent()) {
