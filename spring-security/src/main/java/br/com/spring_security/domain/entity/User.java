@@ -5,7 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -21,5 +24,8 @@ public class User {
     private String password;
 
     private String name;
+
+    @Transient
+    private List<String> permissions;
 
 }

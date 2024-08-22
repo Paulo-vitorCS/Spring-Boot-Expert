@@ -1,10 +1,10 @@
 package br.com.spring_security.api.config;
 
+import br.com.spring_security.domain.security.CustomAuthentication;
+import br.com.spring_security.domain.security.UserIdentification;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,8 +21,13 @@ public class CustomMasterAuthenticationProvider implements AuthenticationProvide
         String masterPassword = "@321";
 
         if (masterLogin.equals(login) && masterPassword.equals(password)) {
-            return new UsernamePasswordAuthenticationToken("I'm Master", null,
-                    List.of(new SimpleGrantedAuthority("ADMIN")));
+            UserIdentification userIdentification = new UserIdentification(
+                    "I am Master",
+                    "Master",
+                    masterLogin,
+                    List.of("ADMIN"));
+
+            return new CustomAuthentication(userIdentification);
         }
 
         return null;
